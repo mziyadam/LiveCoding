@@ -1,0 +1,85 @@
+import java.util.ArrayList;
+import java.util.Scanner; // Import the Scanner class
+
+public class JumlahRuteTerpanjang {
+    // Adjacency list representation of the graph
+    static ArrayList<Integer>[] adj;
+    // Visited array to ensure a simple path (no cycles/repeats)
+    static boolean[] visited;
+    // Stores the longest simple path length found so far
+    static int maxLength;
+    static int N; // Number of vertices
+
+    public static void main(String[] args) {
+        // Replace BufferedReader with Scanner
+        Scanner sc = new Scanner(System.in); 
+
+        // Read the number of test cases (T)
+        int T = sc.nextInt(); 
+
+        for (int t = 1; t <= T; t++) {
+            // Read N and M directly using nextInt()
+            N = sc.nextInt();
+            int M = sc.nextInt();
+
+            // Initialize adjacency list for 1-based indexing
+            adj = new ArrayList[N + 1];
+            for (int i = 1; i <= N; i++) {
+                adj[i] = new ArrayList<>();
+            }
+
+            // Read edges
+            for (int i = 0; i < M; i++) {
+                // Read u and v directly using nextInt()
+                int u = sc.nextInt();
+                int v = sc.nextInt();
+                
+                // Undirected graph
+                adj[u].add(v);
+                adj[v].add(u);
+            }
+
+            // Initialize global maximum path length
+            maxLength = 1; // A single vertex is a path of length 1
+
+            // Iterate over all vertices as potential starting points
+            for (int startVertex = 1; startVertex <= N; startVertex++) {
+                visited = new boolean[N + 1];
+                
+                // Start DFS from the current vertex with path length 1
+                dfs(startVertex, 1);
+            }
+            
+            // Output the result
+            System.out.println("#" + t + " " + maxLength);
+        }
+        
+        // Close the scanner when done reading input
+        sc.close();
+    }
+
+    /**
+     * Finds the longest simple path starting from currentVertex.
+     * @param u The current vertex.
+     * @param len The length of the path up to the current vertex.
+     */
+    private static void dfs(int u, int len) {
+        // 1. Update the overall maximum length found
+        maxLength = Math.max(maxLength, len);
+        
+        // Mark the current vertex as part of the path
+        visited[u] = true;
+
+        // 2. Explore neighbors
+        for (int v : adj[u]) {
+            // Check if the neighbor hasn't been visited (to ensure a simple path)
+            if (!visited[v]) {
+                // Recursive call with increased length
+                dfs(v, len + 1);
+                
+                // 3. Backtrack: unmark the neighbor so it can be used in other paths
+                visited[v] = false; 
+            }
+        }
+    }
+}
