@@ -7,7 +7,7 @@ import BinarySearch.*;
 //https://docs.google.com/document/d/16YVwEzInhoLHszYvmzgHrXrJSp0j7mtPVSXxJk3x0As/edit?tab=t.0
 public class Main {
     public static void main(String[] args) {
-
+        binarySearch();
     }
     //TODO ARRAY
     public static void binarySearch(){
